@@ -2,10 +2,12 @@ Rebol [
 	file: %update-downloads.reb
 	author: "Graham Chiu"
 	Date: 3-March-2017
-	Version: 0.2
+	Version: 0.3
 	notes: {
 		this script reads the xml returned by a S3 bucket listing, and then descending sorts the results by date and build number.
 		It then generates the html tables that are inserted into a HTML template to create the index.html file
+
+		The file is uploaded to http://metaeducation.s3.amazonaws.com/index.html
 	}
 ]
 
@@ -101,7 +103,6 @@ for-each build build-dates [
 ]
 
 sorted-builds: unique sorted-builds
-; Probe sorted-builds
 
 ; now let's build up a list of urls
 
@@ -144,48 +145,59 @@ info: func [ p [url!]
 	return result
 ]
 
+; these contain community builds of format http://address.xxx/.../os-name/r3-buildno
+; the os-name is used for the download table
+community-urls: reduce [
+	http://giuliolunati.altervista.org/r3/android-arm/r3-489ca6a6-debug
+	http://giuliolunati.altervista.org/r3/android5-arm/r3-23a15efe-debug
+]
+
 if error? try [
 	; now to fetch community builds
+	row-data: copy ""
+	attempt [
+		for-each community community-urls [
+			android-info: info community
+			; // == [%/r3/renc-23a15efe-debug 2501412 2-Mar-2017/23:28:36]
+			os: form last split-path first Android-paths: split-path community
+			if #"/" = last os [
+				take/last os
+				change/part os uppercase os/1 1
+			]
+			parse android-paths/2 [ thru "-" copy build [to "-"| to end]]
 
-	Android: http://giuliolunati.altervista.org/r3/android5-arm/r3-23a15efe-debug 
-	android-info: info Android
-	; == [%/r3/renc-23a15efe-debug 2501412 2-Mar-2017/23:28:36]
-	os: form last split-path first Android-paths: split-path Android
-	if #"/" = last os [
-		take/last os
-		change/part os uppercase os/1 1
+			append row-data ajoin [
+				<tr><td><b>
+				os
+				</b><td>
+				"<a href="
+				community
+				"><i class='icon-file'></i>"
+				android-paths/2
+				</a></td><td>
+				android-info/3
+				</td><td>"<a href=" git
+				build
+				">" build </a>
+				</td><td>
+				round/to android-info/2 / 1000000 .01	
+				" Mib"
+				</td></tr>
+			]
+		]
 	]
-	parse android-paths/2 [ thru "-" copy build [to "-"| to end]]
+	if not empty? row-data [
+		append filelist 
+		{<h4 class="muted">Community Builds</h4>
+		<p>
+		These are one-off binaries created to test specific build combinations or platforms. Experimental builds are not automatically updated from the latest sources, and might be unstable.
+		</p>
+		}
 
-	row: ajoin [
-		<tr><td><b>
-		os
-		</b><td>
-		"<a href="
-		Android
-		"><i class='icon-file'></i>"
-		android-paths/2
-		</a></td><td>
-		android-info/3
-		</td><td>"<a href=" git
-		build
-		">" build </a>
-		</td><td>
-		round/to android-info/2 / 1000000 .01	
-		" Mib"
-		</td></tr>
+		append filelist table-header
+		append filelist row-data
+		append filelist {</table><p/>}
 	]
-
-	append filelist 
-	{<h4 class="muted">Community Builds</h4>
-	<p>
-	These are one-off binaries created to test specific build combinations or platforms. Experimental builds are not automatically updated from the latest sources, and might be unstable.
-	</p>
-	}
-
-	append filelist table-header
-	append filelist row
-	append filelist </table>
 ][
 	print "Community builds not available"
 ]
