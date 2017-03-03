@@ -10,8 +10,8 @@
 try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"0f0c38110c57c0992cf8b6c2ca37a55a",petok:"74378819e4eced5618bdd35e66d299e683ffb834-1488514479-1800",zone:"rebolsource.net",rocket:"a",apps:{"ga_key":{"ua":"UA-37676392-1","ga_bs":"2"}}}];document.write('<script type="text/javascript" src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=f2befc48d1/cloudflare.min.js"><'+'\/script>');}}catch(e){};
 //]]>
 </script>
-<link href="assets/bootstrap.min.css" rel="stylesheet">
-<link href="assets/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
