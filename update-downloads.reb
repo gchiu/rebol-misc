@@ -2,13 +2,20 @@ Rebol [
 	file: %update-downloads.reb
 	author: "Graham Chiu"
 	Date: 3-March-2017
-	Version: 0.3
+	Version: 0.3.1
 	notes: {
 		this script reads the xml returned by a S3 bucket listing, and then descending sorts the results by date and build number.
 		It then generates the html tables that are inserted into a HTML template to create the index.html file
 
 		The file is uploaded to http://metaeducation.s3.amazonaws.com/index.html
 	}
+]
+
+; these contain community builds of format http://address.xxx/.../os-name/r3-buildno
+; the os-name is used for the download table
+community-urls: reduce [
+	http://giuliolunati.altervista.org/r3/android-arm/r3-489ca6a6-debug
+	http://giuliolunati.altervista.org/r3/android5-arm/r3-23a15efe-debug
 ]
 
 site: http://metaeducation.s3.amazonaws.com/
@@ -145,18 +152,12 @@ info: func [ p [url!]
 	return result
 ]
 
-; these contain community builds of format http://address.xxx/.../os-name/r3-buildno
-; the os-name is used for the download table
-community-urls: reduce [
-	http://giuliolunati.altervista.org/r3/android-arm/r3-489ca6a6-debug
-	http://giuliolunati.altervista.org/r3/android5-arm/r3-23a15efe-debug
-]
-
+; now process community builds
 if error? try [
 	; now to fetch community builds
 	row-data: copy ""
-	attempt [
-		for-each community community-urls [
+	for-each community community-urls [
+		attempt [
 			android-info: info community
 			; // == [%/r3/renc-23a15efe-debug 2501412 2-Mar-2017/23:28:36]
 			os: form last split-path first Android-paths: split-path community
