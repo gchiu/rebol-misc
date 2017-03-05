@@ -2,20 +2,38 @@ Rebol [
 	file: %update-downloads.reb
 	author: "Graham Chiu"
 	Date: 3-March-2017
-	Version: 0.3.1
+	Version: 0.3.2
 	notes: {
 		this script reads the xml returned by a S3 bucket listing, and then descending sorts the results by date and build number.
 		It then generates the html tables that are inserted into a HTML template to create the index.html file
 
 		The file is uploaded to http://metaeducation.s3.amazonaws.com/index.html
+
+		5-Mar-2017 will now process a community link that lists all the builds available
 	}
 ]
 
 ; these contain community builds of format http://address.xxx/.../os-name/r3-buildno
 ; the os-name is used for the download table
-community-urls: reduce [
-	http://giuliolunati.altervista.org/r3/android-arm/r3-489ca6a6-debug
-	http://giuliolunati.altervista.org/r3/android5-arm/r3-23a15efe-debug
+
+community-links: [
+	http://giuliolunati.altervista.org/r3/ls.php
+]
+
+community-urls: copy []
+tmp: copy []
+
+info: func [ p [url!]
+	/local path port target result
+][
+	path: sys/decode-url p
+	if blank? find path 'path [append path [path: "/"]]
+	target: to file! path/path
+	path/path: "/"
+	port: open path
+	result: write port compose [HEAD (target)]
+	close port
+	return result
 ]
 
 site: http://metaeducation.s3.amazonaws.com/
@@ -139,26 +157,31 @@ for-each build sorted-builds [
 	append filelist <p/>
 ]
 
-info: func [ p [url!]
-	/local path port target result
-][
-	path: sys/decode-url p
-	if blank? find path 'path [append path [path: "/"]]
-	target: to file! path/path
-	path/path: "/"
-	port: open path
-	result: write port compose [HEAD (target)]
-	close port
-	return result
-]
-
 ; now process community builds
+; the link should give a list of file urls
+; we need to get the file date so we can sort them in reverse order	
+
+for-each site community-links [
+	attempt [
+		sites: load site
+		append community-urls sites
+	]
+	community-urls: unique community-urls
+	for-each url community-urls [
+		i: info url
+		repend tmp [i/3 url]
+	]
+]
+sort/skip/reverse tmp 2
+clear community-urls
+append community-urls tmp
+
 if error? try [
 	; now to fetch community builds
 	row-data: copy ""
-	for-each community community-urls [
+	for-each [date community] community-urls [
 		attempt [
-			android-info: info community
+			android-info: info community: to url! community
 			; // == [%/r3/renc-23a15efe-debug 2501412 2-Mar-2017/23:28:36]
 			os: form last split-path first Android-paths: split-path community
 			if #"/" = last os [
