@@ -74,7 +74,7 @@ Copyright &copy; 2012&#8211;2015 Andreas Bolka, rebolsource.net
 Logo and favicon designed by
 <a href="http://hostilefork.com/2013/01/11/logo-design-for-rebol/">
 HostileFork</a>, used with permission. <br>
-File list updated on: <i><update-date></i>
+File list updated on: <i><update-date></i>  Update script <a href=https://github.com/gchiu/rebol-misc/blob/master/update-downloads.reb>Source</a>
 </p>
 </div>
 </div>  
