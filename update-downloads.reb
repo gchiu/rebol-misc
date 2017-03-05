@@ -2,7 +2,7 @@ Rebol [
 	file: %update-downloads.reb
 	author: "Graham Chiu"
 	Date: 3-March-2017
-	Version: 0.3.2
+	Version: 0.3.3
 	notes: {
 		this script reads the xml returned by a S3 bucket listing, and then descending sorts the results by date and build number.
 		It then generates the html tables that are inserted into a HTML template to create the index.html file
@@ -13,17 +13,15 @@ Rebol [
 	}
 ]
 
-; these contain community builds of format http://address.xxx/.../os-name/r3-buildno
-; the os-name is used for the download table
-
-community-links: [
-	http://giuliolunati.altervista.org/r3/ls.php
-]
+; get community-links which direct to community builds
+; do a PR on https://github.com/gchiu/rebol-misc/blob/master/community-links.reb to add your builds
+do https://raw.githubusercontent.com/gchiu/rebol-misc/master/community-links.reb
 
 community-urls: copy []
 tmp: copy []
 
-info: func [ p [url!]
+info: func [ {gets name size and date from a url using the HTTP HEAD verb}
+	p [url!]
 	/local path port target result
 ][
 	path: sys/decode-url p
@@ -158,7 +156,6 @@ for-each build sorted-builds [
 ]
 
 ; now process community builds
-; the link should give a list of file urls
 ; we need to get the file date so we can sort them in reverse order	
 
 for-each site community-links [
