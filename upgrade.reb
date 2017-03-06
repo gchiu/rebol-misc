@@ -1,7 +1,7 @@
 rebol [
 	file: %upgrade.reb
 	notes: {
-		scans for the lastest ren-c build for your OS regardless whether it's a debug build, cpp or c build
+		scans for the lastest build for your OS regardless whether it's a debug build, cpp or c build
 	}
 ]
 
@@ -13,10 +13,11 @@ upgrade: use [page url block latest file tf][
 			either block: select latest unspaced [rebol/version/3 "." rebol/version/4 "." rebol/version/5][
 				url: block/1
 				either rebol/build < block/2 [
-					print spaced ["This build is from" rebol/build "There is one from" block/2 "Do you want to update? (y/n)"]
+					file: last split-path url
+					print spaced ["This build is from" rebol/build "There is" file "from" block/2 "Do you want to update? (Y/n)"]
 					tf: input 
-					either tf = "y" [
-						print ["OK, downloading ..." file: last split-path url]
+					either any [tf = "y" empty? tf][
+						print ["OK, downloading ..." file]
 						write file read url
 					][print "Update declined"]
 				][
