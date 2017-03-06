@@ -5,7 +5,7 @@ rebol [
 	}
 ]
 
-upgrade: use [page url block latest file tf][
+upgrade: use [page url block latest file tf diff][
 	func [][
 		page: to string! read http://metaeducation.s3.amazonaws.com/index.html
 		either parse page [ thru <rebol> copy latest to </rebol> to end][
@@ -14,17 +14,25 @@ upgrade: use [page url block latest file tf][
 				url: block/1
 				either rebol/build < block/2 [
 					file: last split-path url
-					print spaced ["This build is from" rebol/build "There is" file "from" block/2 "Do you want to update? (Y/n)"]
+					diff: difference block/2 rebol/build
+					print/only spaced [
+						"This build dated" rebol/build | 
+						"Newer build by" 
+						if diff/1 > 0 [reduce [diff/1 "hours"]] 
+						if diff/2 > 0 [reduce [diff/2 "mins"]]
+						if diff/3 > 0 [reduce [diff/3 "secs"]]
+						"is" file "from" block/2 newline "Download? (Y/n)"
+					]
 					tf: input 
 					either any [tf = "y" empty? tf][
 						print ["OK, downloading ..." file]
 						write file read url
-					][print "Update declined"]
+					][print "Upgrade declined"]
 				][
 					print "You have the latest build."
 				]
 			][
-				print "No update found for your OS version."
+				print "No upgrade found for your OS version."
 			]
 		][
 			print "Unable to read update data."
