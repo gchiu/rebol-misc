@@ -68,7 +68,7 @@ REBOL is a trademark of
 Our binaries are not built or endorsed by REBOL Technologies. These
 files are provided "as is", without warranty of any kind. Use at your
 own risk.
-</p>
+<br>
 <div class="footer muted">
 <hr>
 <p>
