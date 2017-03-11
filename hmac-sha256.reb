@@ -4,8 +4,7 @@ Rebol [
 	date: 11-Mar-2017
 	notes: {
 		calculates the hmac-sha256 of a message given a key
-		As of this date, the function passes all 6 test test
-		from https://tools.ietf.org/html/rfc4868#page-7
+		As of this date, the function passes all 6 test vectors from https://tools.ietf.org/html/rfc4868#page-7
 
 		blocksize should be 512 but for whatever reason works when set to 64
 	}
@@ -63,7 +62,6 @@ test-vectors: [
 	#{aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
 	#{5468697320697320612074657374207573696e672061206c6172676572207468616e20626c6f636b2d73697a65206b657920616e642061206c6172676572207468616e20626c6f636b2d73697a6520646174612e20546865206b6579206e6565647320746f20626520686173686564206265666f7265206265696e6720757365642062792074686520484d414320616c676f726974686d2e}
 	#{9b09ffa71b942fcb27635fbcd5b0e944bfdc63644f0713938a7f51535c3a35e2}	
-
 ]
 
 cnt: 0
@@ -71,5 +69,4 @@ for-each [key data expected] test-vectors [
 	++ cnt
 	result: hmac-sha256 key data
 	print [ "Test number " cnt equal? expected hmac-sha256 key data]
-
 ]
