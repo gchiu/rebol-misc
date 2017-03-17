@@ -241,7 +241,7 @@ make-http-request: func [
                 ]
             ][
                 ; we only want to keep the HOST: header for testing purposes
-                if find [Host:] word [
+                if find [Host: content-type:] word [
                     repend result [mold word string CRLF]
                 ]
             ]
@@ -267,7 +267,8 @@ make-http-request: func [
         ; Make-Authorization: function [req body scope access secret dateStamp regionName service][
         ; scope: "20150830/us-east-1/service/aws4_request"
         scope: lib/unsplit reduce [copy/part amz-date 8 region service "aws4_request" ] "/" 
-        Authorization: Make-Authorization trim/tail copy result "" scope access secret copy/part amz-date 8 region service
+        content: default [copy ""]
+        Authorization: Make-Authorization trim/tail copy result copy content scope access secret copy/part amz-date 8 region service
         result: Authorization
     ]
     append result CRLF
