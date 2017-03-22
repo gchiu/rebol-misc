@@ -27,7 +27,7 @@ what-commit: function [{attempts to return the commit url for a ren-c downloaded
             commit: unspaced [https://github.com/metaeducation/ren-c/commit "/" build-no]
         ]
     ]
-    dump diff
+    ; dump diff
     either diff > 0:05:00 [
         print "This binary is no longer listed so commit can not be ascertained!"
     ][
