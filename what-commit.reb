@@ -20,14 +20,14 @@ what-commit: function [{attempts to return the commit url for a ren-c downloaded
     diff: 24:00 * 365 ; make it a year - really pessimistic
     for-each [build-no date] builds [
         date: to date! date
-        ; d will always be older then rebol/build
+        ; d will always be older then rebol/build, so if negative .. quit
         diffcandidate: min diff d: difference date rebol/build  
+        if negative? d [break]
         if diffcandidate < diff [
             diff: diffcandidate
             commit: unspaced [https://github.com/metaeducation/ren-c/commit "/" build-no]
         ]
     ]
-    ; dump diff
     either diff > 0:05:00 [
         print "This binary is no longer listed so commit can not be ascertained!"
     ][
