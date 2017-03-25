@@ -47,7 +47,10 @@ from the
 <a href="https://github.com/metaeducation/ren-c">mainline Ren-C sources on
 GitHub</a>.
 Downloads are stand-alone executables, which are not compressed and do
-not require installation<a href="#fn2"><sup>2</sup></a>. Please use debug builds in preference to make error reporting easier.  Mainline builds from 26/03/2017 have the commit hash available as system/commit. To upgrade you can <b>do &lt;upgrade&gt; upgrade</b>.
+not require installation<a href="#fn2"><sup>2</sup></a>.</p> 
+
+<p>
+Please use debug builds in preference to make error reporting easier.  Note that mainline builds from 26-Mar-2017 have the commit hash available as system/commit. To upgrade you can <b>do &lt;upgrade&gt; upgrade</b>.
 </p>
 
 <generated-file-list>
@@ -85,4 +88,3 @@ File list updated on: <i><update-date></i>  Update script <a href=https://github
 <script data-rocketsrc="assets/js/bootstrap.min.js" type="text/rocketscript"></script>
 </body>
 </html>
- 
