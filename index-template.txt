@@ -50,7 +50,7 @@ Downloads are stand-alone executables, which are not compressed and do
 not require installation<a href="#fn2"><sup>2</sup></a>.</p> 
 
 <p>
-Please use debug builds in preference to make error reporting easier.  Note that mainline builds from 26-Mar-2017 have the commit hash available as system/commit. To upgrade you can <b>do &lt;upgrade&gt; upgrade</b>.
+Please use debug builds in preference to make error reporting easier.  Note that mainline builds from 26-Mar-2017 have the commit hash available as system/commit. To upgrade you can <i>do &lt;upgrade&gt; upgrade</i>.
 </p>
 
 <generated-file-list>
