@@ -2,7 +2,7 @@ Rebol [
     file: %upgrade.reb
     title: "Upgrade ren-c binaries"
     date: 24-Mar-2017
-    version: 0.1.0
+    version: 0.1.1
     notes: {
         scans for the lastest build for your OS regardless whether it's a debug build, cpp or c build
     }
@@ -32,6 +32,14 @@ upgrade: function [][
                 either any [tf = "y" empty? tf][
                     print ["OK, downloading ..." file]
                     write file read url
+                    if rebol/platform/1 = 'Windows [
+                        print/only "Rename to r3.exe? (Y/n)"
+                        tf: input
+                        if any [tf = "y" empty? tf][
+                            write %upgrade.cmd unspaced ["del r3.exe" newline "ren " form file " r3.exe"]
+                            print "run upgrade.cmd"
+                        ]
+                    ]
                 ][print "Upgrade declined"]
             ][
                 print "You have the latest build."
