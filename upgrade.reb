@@ -36,7 +36,7 @@ upgrade: function [][
                         print/only "Rename to r3.exe? (Y/n)"
                         tf: input
                         if any [tf = "y" empty? tf][
-                            write %upgrade.cmd unspaced ["del r3.exe" newline "ren " form file " r3.exe"]
+                            write %upgrade.cmd unspaced ["del r3.exe" newline "ren " form file " r3.exe" newline "r3"]
                             print "run upgrade.cmd"
                         ]
                     ]
