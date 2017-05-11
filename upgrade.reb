@@ -52,3 +52,5 @@ upgrade: function [][
     ]
     print "Finished."
 ]
+
+upgrade
