@@ -32,6 +32,6 @@ Rebol [
 ]
 
 community-links: [
-	http://giuliolunati.altervista.org/r3/ls.php
+	; http://giuliolunati.altervista.org/r3/ls.php
 	http://rebolbinaries.0pt.pw/downloads.reb
 ]
