@@ -27,6 +27,7 @@ if not exists? r3binary [
         binary: select data ver
         fl: flash join "Download binary from " binary/1
         write/binary r3binary read/binary binary/1
+        set-modes r3binary [owner-execute: true]
         unview/only fl
         ; in linux should now set the permissions to executable
     ][
