@@ -1,37 +1,25 @@
 REBOL [
-    Title: "Micro Web Server"
-    Date: 10-Jun-2000
-    File: %webserver.r
+    Title: "R2 GUI server"
+    Date: 19-May-2018
+    File: %t2-gui-server.r
     Purpose: {
-        Here is a web server that works quite well and can be
-        run from just about any machine. It's not only fast,
-        but its also small so it's easy to enhance.
     }
     History: [
-    10-Jun-2000 "Buffers the entire request, adds address" 
-    22-Jun-1999 "First posted"
 ]
     Notes: {
-        Set the web-dir to point to the file directory that
-        contains your web site files, such as index.html.
+        use: view -s r2-gui-server.r
     }
-    library: [
-        level: 'intermediate 
-        platform: none 
-        type: none 
-        domain: [web other-net] 
-        tested-under: none 
-        support: none 
-        license: none 
-        see-also: none
-    ]
 ]
+
+; will be passing blocks to Ren-c
+_: :none
+listen-on: 8081
 
 ; download latest r3
 ver: reverse rebol/Version
 ver: rejoin [ "0." ver/2 "." ver/1]
 
-r3binary: either system/version/4 = 3 [ %r3.exe][%r3]
+r3binary: either system/version/4 = 3 [%r3.exe][%r3]
 if not exists? r3binary [
     downloads: read http://metaeducation.s3.amazonaws.com/index.html
     either parse downloads [thru <rebol> copy data to </rebol> to end][
@@ -52,34 +40,14 @@ web-dir: %.   ; the path to where you store your web files
 
 attempt [
     unview/all
-    close listen-port
+    close web
 ]
 
-listen-port: open/lines tcp://:8080  ; port used for web connections
-
-errors: [
-    400 "Forbidden" "No permission to access:"
-    404 "Not Found" "File was not found:"
+if not exists? %httpd.r [
+    write %httpd.r read https://raw.githubusercontent.com/gchiu/Scripts-For-Rebol-2/059e962af47e740fbf8963af9327674c5070dd48/httpd.r
 ]
 
-send-error: function [err-num file] [err] [
-    err: find errors err-num
-    insert http-port join "HTTP/1.0 " [
-        err-num " " err/2 "^M^/Content-type: text/html^M^/^M^/" 
-        <HTML> <TITLE> err/2 </TITLE>
-        "<BODY><H1>SERVER-ERROR</H1><P>REBOL Webserver Error:"
-        err/3 " " file newline <P> </BODY> </HTML>
-    ]
-]
-
-send-page: func [data mime /local headers] [
-    headers: rejoin ["HTTP/1.0 200 OK^M^/Content-type: " mime "^M^/" "Content-length: " length? data {^M^/^M^/}]
-    print "calling send-page"
-    write-io http-port append headers data (add length? headers length? data)
-    data: none
-] 
-
-buffer: make string! 1024  ; will auto-expand if needed
+do %httpd.r
 
 makeUUID: func [ 
      "Generates a Version 4 UUID that is compliant with RFC 4122" 
@@ -116,11 +84,16 @@ task: make object! [
     created: 
     start: 
     end: 
-    cmd: none
+    cmd: _
     cancelled: false
 ]
 
 view/new layout [
+    origin 0
+    b: banner 140x32 rate 1 
+    effect [gradient 0x1 0.0.150 0.0.50]
+    feel [engage: func [f a e] [set-face b now/time]]
+
     button "Print hello" [print "hello"]
     button "Rebol.com" 100 [
         t: make task compose [
@@ -149,7 +122,7 @@ view/new layout [
         t: make task compose [
             id: (makeUUID)
             created: (now/precise)
-            cmd: "read http://ipv4.download.thinkbroadband.com:8080/200MB.zip"
+            cmd: "{download complete} | read http://ipv4.download.thinkbroadband.com:8080/200MB.zip"
             callback: func [data][
                 set-face textarea data
             ]
@@ -168,17 +141,18 @@ view/new layout [
     ]
     button "Task Queue" [probe task-queue]
     button "Halt" [unview/all halt]
-    textarea: area [300x400]
+    textarea: area [300x400] join "Listening on port: " listen-on
 ]
 
 task-queue: []
 
-script: {
+script: rejoin [{
 Rebol [file: client.r3]
 
 system/options/dump-size: 400
 client-id: uuid/to-text uuid/generate
 dump client-id
+print "waiting 5 seconds ..."
 wait 5 ; for things to start up
 
 print "Now grabbing tasks"
@@ -187,36 +161,60 @@ forever [
     ; grab a task
     ; attempt [
         print ["requesting a task" now/time]
-        task: to text! trim read join-of http://localhost:8080/tasks?client-id= client-id
-        dump task
+        task: to text! trim read join-of http://localhost:listen-on/tasks?client-id= client-id
         if task <> "none" [
+            t1: now/precise
             print "loading task"
             task: do task
-            dump task
+            probe task
+            cmd: load task/cmd
+            probe cmd
+            print "doing task"
+            result: do cmd
+            print "finished task"
+            t2: now/precise
+            data: spaced ["Task Received by instance" client-id newline
+                "Task commenced at:" t1 newline
+                "Task finished at:" t2
+                #{0D0A0D0A}
+            ]
+            if binary? result [
+                append data result
+            ]
+            write http://localhost:listen-on/done-tasks compose [POST [content-type: "text/text"] (data)]
         ]
     ; ]
     wait 5
 ]
-}
+}]
+
+replace/all script "listen-on" listen-on
 
 write %script.reb script
 call/show to-local-file reform [r3binary "-cs" %script.reb]
 
-forever [
-    either not error? set/any 'err try [
-        http-port: first wait listen-port
-        clear buffer
-        while [not empty? request: first http-port][
-            repend buffer [request newline]
-        ]
-        repend buffer ["Address: " http-port/host newline] 
-        print buffer
-        file: "index.html"
-        mime: "text/plain"
-        parse buffer ["get" ["http" | "/ " | copy file to " "]]
-        ; {/tasks?client-id=24230C17-B413-48B7-9B63-972C377AA42B}
-        ?? file
-        either parse file ["/tasks?client-id=" copy client-id to end][
+open/custom web: join httpd://: listen-on [ 
+     ; you have access here to two objects: REQUEST and RESPONSE 
+     ; you can set the response by altering the fields in the RESPONSE object 
+     ; by default, the server returns 404 
+    ;  probe request
+
+    if request/action = "POST /done-tasks" [
+        response/status: 200
+        response/content: "OK"
+        result: to string! request/binary
+        parse/all result [copy text to #{0D0A0D0A} thru #{0D0A0D0A} copy binary to end]
+        trim text
+        trim/head/tail binary
+        set-face textarea text
+        binary: load binary
+        attempt [print to string! binary]
+    ]
+    
+    if request/action =  "GET /tasks" [ 
+        either parse request/request-uri ["/tasks?client-id=" copy client-id to end][
+            response/status: 200 
+            response/type: "text/text"
             ; got a valid request so return a task
             new-task: none
             foreach task task-queue [
@@ -225,25 +223,24 @@ forever [
                     task/client-id: client-id
                     print mold task
                     print "======>sent a task"
-                    task: mold task
-                    replace/all task "none" "_"
-                    send-page mold task "text/text"
+                    new-task: mold task 
+                    replace/all new-task "none" "_"
+                    response/content: new-task
                     break
                 ]
             ]
             if none? new-task [
                 ; no tasks available to send blank task
                 print "No tasks available"
-                send-page "none" "text/text"
+                response/content: "none" 
             ]
         ][
             print "Unrecognized command received"
-            send-error 400 file
+            response/content: "Unrecognized command received"
+            response/status: 400
         ]
-        close http-port
-    ][
-        print "Successful request" now/precise
-    ][
-        print mold disarm get/any 'err
     ]
-]
+     ; setting RESPONSE/KILL? to TRUE will break the WAIT loop below 
+] 
+    
+wait [] 
