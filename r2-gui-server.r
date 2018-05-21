@@ -192,7 +192,10 @@ forever [
 replace/all script "listen-on" listen-on
 
 write %script.reb script
-call/show to-local-file reform [r3binary "-cs" %script.reb]
+process: reform [to-local-file clean-path r3binary "-cs" %script.reb]
+loop 1 [ ; try different numbers to see how many processes the r2 webserver can handle
+    call/show process
+]
 
 open/custom web: join httpd://: listen-on [ 
      ; you have access here to two objects: REQUEST and RESPONSE 
