@@ -45,10 +45,10 @@ These are builds that are to be used to provide some degree of concensus for wri
 They will only be changed once agreement has been reached amongst the main users on the <a href=https://forum.rebol.info/>forum</a>.
 
 <ul>
-<li> <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.13.2/r3-e560322-debug>Android5-arm - r3-e560322-debug</a> 4.3 Mib
-<li> <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.2.40/r3-e560322-debug-cpp>OSX x64 - r3-e560322-debug-cpp</a> 2.3 Mib
-<li> <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.3.1/r3-e560322.exe>Windows 32 - r3-e560322.exe</a>m 1.2 Mib
-<li> <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.3.40/r3-e560322-debug.exe>Windows 64 - r3-e560322-debug.exe</a> 4.5 Mib
+<li> Android5-arm - <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.13.2/r3-e560322-debug>r3-e560322-debug</a> 4.3 Mib
+<li> OSX x64 - <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.2.40/r3-e560322-debug-cpp>r3-e560322-debug-cpp</a> 2.3 Mib
+<li> Windows 32 - <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.3.1/r3-e560322.exe>r3-e560322.exe</a>m 1.2 Mib
+<li> Windows 64 - <a href=http://metaeducation.s3.amazonaws.com/travis-builds/0.3.40/r3-e560322-debug.exe>r3-e560322-debug.exe</a> 4.5 Mib
 </ul>
 <p>
 
