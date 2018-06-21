@@ -41,7 +41,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <h3 class="muted"><span>Ren-C Binaries (Travis-CI)</span></h3>
 <h4 class="muted">Snapshot Builds 21-June 2018</h4>
 <p>
-These are builds that are to be used to provide some degree of concensus for writing script using Ren-C.
+These are builds that are to be used to provide some degree of concensus for writing scripts and modules using Ren-C.
 They will only be changed once agreement has been reached amongst the main users on the <a href=https://forum.rebol.info/>forum</a>.
 
 <ul>
