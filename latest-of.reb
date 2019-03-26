@@ -15,8 +15,8 @@ latest-of: function [os [tuple!]][
 		filename: unspaced ["r3-" commit]
 		debugfilename: append copy filename "-debug"
 		if find ["0.3.1" "0.3.40"] os [
-			append filename: %.exe
-			append debugfilename: %.exe
+			append filename %.exe
+			append debugfilename %.exe
 		]
 		print "searching ..."
 		filename.info: js-head filename.url: to-url unspaced [root os "/" filename]
