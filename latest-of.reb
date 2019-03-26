@@ -21,15 +21,15 @@ latest-of: function [os [tuple!]][
 		print "searching ..."
 		if error? entrap [
 			filename.info: js-head filename.url: to-url unspaced [root os "/" filename]
-			-- filename.info
 			print filename.url
+			mold filename.info
 		][
 			print ["file:" filename "doesn't exist"]
 		]
 		if error? entrap [
 			debugfilename.info: js-head debugfilename.url: to-url unspaced [root os "/" debugfilename]
-			-- debugfilename.info
 			print debugfilename.url
+			mold debugfilename.info
 		][
 			print ["file:" debugfilename "doesn't exist"]
 		]
