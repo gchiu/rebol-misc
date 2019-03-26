@@ -19,12 +19,21 @@ latest-of: function [os [tuple!]][
 			append debugfilename %.exe
 		]
 		print "searching ..."
-		filename.info: js-head filename.url: to-url unspaced [root os "/" filename]
-		debugfilename.info: js-head debugfilename.url: to-url unspaced [root os "/" debugfilename]
-		-- filename.info
-		print filename.url
-		-- debugfilename.info
-		print debugfilename.url
+		if error? entrap [
+			filename.info: js-head filename.url: to-url unspaced [root os "/" filename]
+			-- filename.info
+			print filename.url
+		][
+			print ["file:" filename "doesn't exist"]
+		]
+		if error? entrap [
+			debugfilename.info: js-head debugfilename.url: to-url unspaced [root os "/" debugfilename]
+			-- debugfilename.info
+			print debugfilename.url
+		][
+			print ["file:" debugfilename "doesn't exist"]
+		]
+			
 	] else [
 		print "Invalid OS"
 	]
