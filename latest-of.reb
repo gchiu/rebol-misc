@@ -19,20 +19,20 @@ latest-of: function [os [tuple!]][
 			append debugfilename %.exe
 		]
 		print "searching ..."
-		if error? entrap [
+		;if error? entrap [
 			filename.info: js-head filename.url: to-url unspaced [root os "/" filename]
 			print filename.url
 			mold filename.info
-		][
-			print ["file:" filename "doesn't exist"]
-		]
-		if error? entrap [
+		;][
+		;	print ["file:" filename "doesn't exist"]
+		;]
+		;if error? entrap [
 			debugfilename.info: js-head debugfilename.url: to-url unspaced [root os "/" debugfilename]
 			print debugfilename.url
 			mold debugfilename.info
-		][
-			print ["file:" debugfilename "doesn't exist"]
-		]
+		;][
+		;	print ["file:" debugfilename "doesn't exist"]
+		;]
 			
 	] else [
 		print "Invalid OS"
