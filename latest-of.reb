@@ -9,7 +9,7 @@ latest-of: function [os [tuple!]][
 	root: https://s3.amazonaws.com/metaeducation/travis-builds/
 	commit: copy/part rebol/commit 7
 	digit: charset [#"0" - #"6"]
-	inf?: if rebol/version = 2.102.0.16.2 [
+	inf?: if find form rebol/version 2.102.0.16.2 [
 		pr: :print
 		:js-head] 
 	else [
