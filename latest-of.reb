@@ -10,10 +10,10 @@ latest-of: function [os [tuple!]][
 	commit: copy/part rebol/commit 7
 	digit: charset [#"0" - #"6"]
 	inf?: if find form rebol/version "2.102.0.16.2" [
-		pr: :print
+		pr: specialize 'replpad-write [html: true]
 		:js-head] 
 	else [
-		pr: specialize 'replpad-write [html: true]
+		pr: :print
 		:info?
 	]
 	os: form os
@@ -28,15 +28,14 @@ latest-of: function [os [tuple!]][
 		print "searching ..."
 		if error? entrap [
 			filename.info: inf? filename.url: to-url unspaced [root os "/" filename]
-			mold filename.info
+			-- filename.info
 			pr unspaced ["<a href=" filename.url ">" filename.url </a>]
-			mold filename.info
 		][
 			print ["file:" filename "doesn't exist"]
 		]
 		if error? entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
-			mold debugfilename.info
+			-- debugfilename.info
 			pr unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a>]
 		][
 			print ["file:" debugfilename "doesn't exist"]
