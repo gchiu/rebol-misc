@@ -28,17 +28,17 @@ latest-of: function [os [tuple!]][
 		print "searching ..."
 		if error? entrap [
 			filename.info: inf? filename.url: to-url unspaced [root os "/" filename]
-			mold filename.info
+			print mold filename.info
 			pr unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
 		][
-			print ["file:" filename "doesn't exist"]
+			print ["file:" filename "doesn't exist, it may still be being deployed"]
 		]
 		if error? entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
-			mold debugfilename.info
+			print mold debugfilename.info
 			pr unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
 		][
-			print ["file:" debugfilename "doesn't exist"]
+			print ["file:" debugfilename "doesn't exist, it may still be being deployed"]
 		]
 			
 	] else [
