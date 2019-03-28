@@ -2,7 +2,7 @@ Rebol [
 	file: %latest-of.reb
 	date: 26-Mar-2019
 	Author: "Graham"
-	version: 0.1.0
+	version: 0.1.1
   	note: "web and console utility"
 ]
 
@@ -31,26 +31,26 @@ latest-of: function [os [tuple!]
 	/specific commit [text!]
 ][
 	if not specific [
-		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/zzz_git_commit.js.js]
-     			[{last_git_commit_short = '} copy commit to {'} to end] 
+		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/zzz_git_commit.js]
+     			[{git_commit = '} copy commit to {'} to end] 
 	]
 	root: https://s3.amazonaws.com/metaeducation/travis-builds/
 	; commit: copy/part rebol/commit 7
 	digit: charset [#"0" - #"6"]
 	inf?: if find form rebol/version "2.102.0.16.2" [
 		web: true
-    		fsize-of: function [o [object!]][to integer! o/content-length]
-    		fdate-of: function [o [object!]][
-        		idate-to-date o/last-modified
-    		]
+		fsize-of: function [o [object!]][to integer! o/content-length]
+		fdate-of: function [o [object!]][
+    		idate-to-date o/last-modified
+		]
 		pr: specialize 'replpad-write [html: true]
-		:js-head] 
-	else [
+		:js-head
+	] else [
 		web: false
-    		fsize-of: function [o [object!]][o/size]
-    		fdate-of: function [o [object!]][
-      			o/date    
-    		]
+		fsize-of: function [o [object!]][o/size]
+		fdate-of: function [o [object!]][
+  			o/date    
+		]
 		pr: :print
 		:info?
 	]
@@ -71,12 +71,12 @@ latest-of: function [os [tuple!]
 			pr if web [
 				unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
 			] else [
-				form filename.url
+				append form filename.url newline
 			]
 		][
 			print ["file:" filename "doesn't exist, it may still be being deployed" newline]
 		]
-		if error? entrap [
+		if error? err: entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
 			print ["File size:" fsize-of debugfilename.info "Date:" fdate-of debugfilename.info]
 			pr if web [
@@ -85,9 +85,14 @@ latest-of: function [os [tuple!]
 				form debugfilename.url
 			]
 		][
-			if (difference now latest) < 2:00 [
+			; can appear here if 404 error in JS, or, inf is null
+			if any [
+				find err "id: 'no-value"			
+				(difference now latest) < 2:00 
+			][
 				print ["file:" debugfilename "doesn't exist, it may still be being deployed"]
 			]
+			()
 		]
 			
 	] else [
