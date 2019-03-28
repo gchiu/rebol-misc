@@ -31,6 +31,7 @@ latest-of: function [os [tuple!]][
 	; commit: copy/part rebol/commit 7
 	digit: charset [#"0" - #"6"]
 	inf?: if find form rebol/version "2.102.0.16.2" [
+		web: true
     		fsize-of: function [o [object!]][to integer! o/content-length]
     		fdate-of: function [o [object!]][
         		idate-to-date o/last-modified
@@ -38,6 +39,7 @@ latest-of: function [os [tuple!]][
 		pr: specialize 'replpad-write [html: true]
 		:js-head] 
 	else [
+		web: false
     		fsize-of: function [o [object!]][o/size]
     		fdate-of: function [o [object!]][
       			o/date    
@@ -60,7 +62,11 @@ latest-of: function [os [tuple!]][
 			filename.info: inf? filename.url: to-url unspaced [root os "/" filename]
 			; print mold filename.info
 			print ["File size:" fsize-of filename.info "Date:" latest: fdate-of filename.info]
-			pr unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
+			pr if web [
+				unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
+			] else [
+				filename.url
+			]
 		][
 			print ["file:" filename "doesn't exist, it may still be being deployed"]
 		]
@@ -68,7 +74,11 @@ latest-of: function [os [tuple!]][
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
 			; print mold debugfilename.info
 			print ["File size:" fsize-of debugfilename.info "Date:" fdate-of debugfilename.info]
-			pr unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
+			pr if web [
+				unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
+			][
+				debugfilename.url
+			]
 		][
 			if not all [
 				now - latest > 1
