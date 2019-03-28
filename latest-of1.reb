@@ -5,6 +5,25 @@ Rebol [
   	note: "web utility only"
 ]
 
+idate-to-date: function [return: [date!] date [text!]] [
+    parse date [
+        5 skip
+        copy day: 2 digit
+        space
+        copy month: 3 alpha
+        space
+        copy year: 4 digit
+        space
+        copy time: to space
+        space
+        copy zone: to end
+    ] else [
+        fail ["Invalid idate:" date]
+    ]
+    if zone = "GMT" [zone: copy "+0"]
+    to date! unspaced [day "-" month "-" year "/" time zone]
+]
+
 latest-of: function [os [tuple!]][
   parse to text! read https://metaeducation.s3.amazonaws.com/travis-builds/0.16.2/last_git_commit_short.js
      [{last_git_commit_short = '} copy commit to {'} to end] 
@@ -14,7 +33,7 @@ latest-of: function [os [tuple!]][
 	inf?: if find form rebol/version "2.102.0.16.2" [
     fsize-of: function [o [object!][to integer! o/content-length]
     fdate-of: function [o [object!][
-        date: o/last-modified
+        idate-to-date o/last-modified
     ]
 		pr: specialize 'replpad-write [html: true]
 		:js-head] 
