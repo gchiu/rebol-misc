@@ -62,7 +62,7 @@ latest-of: function [os [tuple!]
 		]	
 		latest: 1-Jan-1980
 		print "searching ..."
-		;if error? entrap [
+		if error? entrap [
 			filename.info: inf? filename.url: to-url unspaced [root os "/" filename]
 			print ["File size:" fsize-of filename.info "Date:" latest: fdate-of filename.info]
 			pr if web [
@@ -70,10 +70,10 @@ latest-of: function [os [tuple!]
 			] else [
 				form filename.url
 			]
-		;][
-		;	print ["file:" filename "doesn't exist, it may still be being deployed"]
-		;]
-		if error? entrap [
+		][
+			print ["file:" filename "doesn't exist, it may still be being deployed"]
+		]
+		;if error? entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
 			print ["File size:" fsize-of debugfilename.info "Date:" fdate-of debugfilename.info]
 			pr if web [
@@ -81,11 +81,11 @@ latest-of: function [os [tuple!]
 			] else [
 				form debugfilename.url
 			]
-		][
+		;][
 			if (difference now latest) < 2:00 [
 				print ["file:" debugfilename "doesn't exist, it may still be being deployed"]
 			]
-		]
+		;]
 			
 	] else [
 		print "Invalid OS"
