@@ -74,7 +74,7 @@ latest-of: function [os [tuple!]][
 			print ["File size:" fsize-of debugfilename.info "Date:" fdate-of debugfilename.info]
 			pr if web [
 				unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
-			][
+			] else [
 				form debugfilename.url
 			]
 		][
