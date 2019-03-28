@@ -24,9 +24,13 @@ idate-to-date: function [return: [date!] date [text!]] [
     to date! unspaced [day "-" month "-" year "/" time zone]
 ]
 
-latest-of: function [os [tuple!]][
-	parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/last_git_commit_short.js]
-     		[{last_git_commit_short = '} copy commit to {'} to end] 
+latest-of: function [os [tuple!]
+	/specific commit [text!]
+][
+	if not specific [
+		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/last_git_commit_short.js]
+     			[{last_git_commit_short = '} copy commit to {'} to end] 
+	]
 	root: https://s3.amazonaws.com/metaeducation/travis-builds/
 	; commit: copy/part rebol/commit 7
 	digit: charset [#"0" - #"6"]
