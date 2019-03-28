@@ -58,18 +58,18 @@ latest-of: function [os [tuple!]][
 		]	
 		latest: 1-Jan-1980
 		print "searching ..."
-		;if error? entrap [
+		if error? entrap [
 			filename.info: inf? filename.url: to-url unspaced [root os "/" filename]
 			; print mold filename.info
 			print ["File size:" fsize-of filename.info "Date:" latest: fdate-of filename.info]
 			pr if web [
 				unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
 			] else [
-				filename.url
+				form filename.url
 			]
-		;][
-		;	print ["file:" filename "doesn't exist, it may still be being deployed"]
-		;]
+		][
+			print ["file:" filename "doesn't exist, it may still be being deployed"]
+		]
 		if error? entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
 			; print mold debugfilename.info
@@ -77,7 +77,7 @@ latest-of: function [os [tuple!]][
 			pr if web [
 				unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
 			][
-				debugfilename.url
+				form debugfilename.url
 			]
 		][
 			if not all [
