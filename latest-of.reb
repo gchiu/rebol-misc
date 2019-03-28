@@ -31,7 +31,7 @@ latest-of: function [os [tuple!]
 	/specific commit [text!]
 ][
 	if not specific [
-		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/last_git_commit_short.js]
+		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/zzz_git_commit.js.js]
      			[{last_git_commit_short = '} copy commit to {'} to end] 
 	]
 	root: https://s3.amazonaws.com/metaeducation/travis-builds/
