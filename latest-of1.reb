@@ -25,7 +25,7 @@ idate-to-date: function [return: [date!] date [text!]] [
 ]
 
 latest-of: function [os [tuple!]][
-	parse to text! read https://metaeducation.s3.amazonaws.com/travis-builds/0.16.2/last_git_commit_short.js
+	parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/last_git_commit_short.js]
      		[{last_git_commit_short = '} copy commit to {'} to end] 
 	root: https://s3.amazonaws.com/metaeducation/travis-builds/
 	; commit: copy/part rebol/commit 7
