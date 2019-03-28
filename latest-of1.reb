@@ -7,6 +7,7 @@ Rebol [
 
 idate-to-date: function [return: [date!] date [text!]] [
     digit: charset [#"0" - #"9"]
+    alpha: charset [ #"A" - #"Z" #"a" - #"z" ]
     parse date [
         5 skip
         copy day: 2 digit
