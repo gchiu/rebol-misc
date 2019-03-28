@@ -2,7 +2,8 @@ Rebol [
 	file: %latest-of.reb
 	date: 26-Mar-2019
 	Author: "Graham"
-  	note: "web utility only"
+	version: 0.1.0
+  	note: "web and console utility"
 ]
 
 idate-to-date: function [return: [date!] date [text!]] [
