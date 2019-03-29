@@ -67,7 +67,7 @@ latest-of: function [os [tuple!]
 		print "searching ..."
 		if error? entrap [
 			filename.info: inf? filename.url: to-url unspaced [root os "/" filename]
-			print ["File size:" fsize-of filename.info "Date:" latest: fdate-of filename.info]
+			print ["File size:" round/to divide fsize-of filename.info 1000000 .01 "Mb" "Date:" latest: fdate-of filename.info]
 			pr if web [
 				unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
 			] else [
@@ -78,7 +78,7 @@ latest-of: function [os [tuple!]
 		]
 		if error? err: entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
-			print ["File size:" fsize-of debugfilename.info "Date:" fdate-of debugfilename.info]
+			print ["File size:" round/to divide fsize-of debugfilename.info 1000000 .01 "Mb" "Date:" fdate-of debugfilename.info]
 			pr if web [
 				unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
 			] else [
