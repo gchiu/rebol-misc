@@ -28,9 +28,9 @@ idate-to-date: function [return: [date!] date [text!]] [
 ]
 
 latest-of: function [os [tuple!]
-	/specific commit [text!]
+	/commit [text!]
 ][
-	if not specific [
+	if not commit [
 		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/zzz_git_commit.js]
      			[{git_commit = '} copy commit to {'} to end] 
 	]
