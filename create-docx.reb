@@ -67,5 +67,5 @@ data: reword data [a fname b lname c mobile d company]
 
 js-do data
 
-print  {<button onclick="generate()">Generate document</button>}
+js-do {generate()}
 
