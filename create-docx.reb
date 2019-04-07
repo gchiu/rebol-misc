@@ -28,7 +28,7 @@ prin "Mobile: " until [not empty? mobile: input]
 prin "Company: " until [not empty? company: input]
 
 data: {
-   let generate = new function (
+   var generate = new function (
         loadFile("https://metaeducation.s3.amazonaws.com/tag-example.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
@@ -60,7 +60,7 @@ data: {
             }) //Output the document using Data-URI
             saveAs(out,"output.docx")
         })
-    )
+    );
 }
 
 data: reword data [a fname b lname c mobile d company]
