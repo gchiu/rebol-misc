@@ -19,7 +19,7 @@ for-each site [
 
 js-do {var loadFile = function(url,callback){
         JSZipUtils.getBinaryContent(url,callback);
-    }
+    };
 }
 
 prin "First Name: " until [not empty? fname: input]
@@ -27,8 +27,7 @@ prin "Last Name: " until [not empty? lname: input]
 prin "Mobile: " until [not empty? mobile: input]
 prin "Company: " until [not empty? company: input]
 
-data: {
-   var generate = function(
+data: {var generate = function(
         loadFile("https://metaeducation.s3.amazonaws.com/tag-example.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
