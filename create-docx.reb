@@ -59,7 +59,7 @@ data: {var generate = function() {
             }) //Output the document using Data-URI
             saveAs(out,"output.docx")
         })
-    }
+    };
 }
 
 data: reword data [a fname b lname c mobile d company]
