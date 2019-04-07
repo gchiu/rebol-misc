@@ -12,7 +12,16 @@ prin "Last Name: " until [not empty? lname: input]
 prin "Mobile: " until [not empty? mobile: input]
 prin "Company: " until [not empty? company: input]
 
-data: {function generate() {
+data: {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js"></script>
+    <script>
+    function loadFile(url,callback){
+        JSZipUtils.getBinaryContent(url,callback);
+    }
+   function generate() {
         loadFile("https://metaeducation.s3.amazonaws.com/tag-example.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
@@ -44,6 +53,10 @@ data: {function generate() {
             }) //Output the document using Data-URI
             saveAs(out,"output.docx")
         })
-    }}
+    }
+ </script>   
+}
 
 data: reword data [a fname b lname c mobile d company]
+
+replpad-write/html data
