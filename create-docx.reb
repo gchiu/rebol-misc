@@ -1,7 +1,7 @@
 Rebol [
   notes: {Docx templating test using JS and Rebol}
   date: 7-April-2019
-  comment {
+  notes: {
     Ask a few questions, then generate a JS function which we push to the DOM.
     This should convert the template docx to be filled with our data which you download
   }
