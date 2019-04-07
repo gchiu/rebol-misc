@@ -55,8 +55,9 @@ data: {
         })
     }
  </script>   
+ <button onclick="generate()">Generate document</button>
 }
 
 data: reword data [a fname b lname c mobile d company]
 
-replpad-write/html data
+js-do data
