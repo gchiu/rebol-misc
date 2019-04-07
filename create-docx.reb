@@ -6,6 +6,8 @@ comment {
   Ask a few questions, then generate a JS function which we push to the DOM.
   This should convert the template docx to filled with our data
 }
+
+
 for-each site [
   https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js
   https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
@@ -15,11 +17,10 @@ for-each site [
   js-do site
 ]
 
-js-do     {function loadFile(url,callback){
+js-do {function loadFile(url,callback){
         JSZipUtils.getBinaryContent(url,callback);
     }
 }
-
 
 prin "First Name: " until [not empty? fname: input]
 prin "Last Name: " until [not empty? lname: input]
@@ -29,7 +30,6 @@ prin "Company: " until [not empty? company: input]
 
 
 data: {
-    <script>
    function generate() {
         loadFile("https://metaeducation.s3.amazonaws.com/tag-example.docx",function(error,content){
             if (error) { throw error };
@@ -63,10 +63,8 @@ data: {
             saveAs(out,"output.docx")
         })
     }
- </script>   
- <button onclick="generate()">Generate document</button>
 }
 
 data: reword data [a fname b lname c mobile d company]
 
-; js-do data
+js-do data
