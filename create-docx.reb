@@ -1,12 +1,11 @@
 Rebol [
   notes: {Docx templating test using JS and Rebol}
   date: 7-April-2019
+  comment {
+    Ask a few questions, then generate a JS function which we push to the DOM.
+    This should convert the template docx to be filled with our data which you download
+  }
 ]
-comment {
-  Ask a few questions, then generate a JS function which we push to the DOM.
-  This should convert the template docx to filled with our data
-}
-
 
 for-each site [
   https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js
@@ -26,8 +25,6 @@ prin "First Name: " until [not empty? fname: input]
 prin "Last Name: " until [not empty? lname: input]
 prin "Mobile: " until [not empty? mobile: input]
 prin "Company: " until [not empty? company: input]
-
-
 
 data: {
    function generate() {
@@ -68,3 +65,6 @@ data: {
 data: reword data [a fname b lname c mobile d company]
 
 js-do data
+
+print  {<button onclick="generate()">Generate document</button>}
+
