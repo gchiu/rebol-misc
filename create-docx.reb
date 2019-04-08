@@ -66,5 +66,5 @@ data: reword data [a fname b lname c mobile d company]
 
 js-do data
 
-js-do {window.generate()}
+js-do {generate()}
 
