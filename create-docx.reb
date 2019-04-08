@@ -17,7 +17,7 @@ for-each site [
   js-do site
 ]
 
-js-do {var loadFile = function(url,callback){
+js-do {window.loadFile = function(url,callback){
         JSZipUtils.getBinaryContent(url,callback);
     };
 }
