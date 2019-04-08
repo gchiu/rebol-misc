@@ -27,7 +27,7 @@ prin "Last Name: " until [not empty? lname: input]
 prin "Mobile: " until [not empty? mobile: input]
 prin "Company: " until [not empty? company: input]
 
-data: {var window.generate = function() {
+data: {window.generate = function() {
         loadFile("https://metaeducation.s3.amazonaws.com/tag-example.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
