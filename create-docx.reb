@@ -63,7 +63,7 @@ data: {window.generate = function() {
     generate()
 }
 
-data: reword data [a fname b lname c mobile d company]
+data: reword data reduce ['a fname 'b lname 'c mobile 'd company]
 
 js-do data
 
