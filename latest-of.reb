@@ -2,7 +2,7 @@ Rebol [
 	file: %latest-of.reb
 	date: 26-Mar-2019
 	Author: "Graham"
-	version: 0.1.1
+	version: 0.1.2
   	note: "web and console utility"
 ]
 
@@ -31,8 +31,7 @@ latest-of: function [os [tuple!]
 	/commit [text!]
 ][
 	if not commit [
-		parse to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/zzz_git_commit.js]
-     			[{git_commit = '} copy commit to {'} to end] 
+		commit: trim/tail to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/last-deploy.short-hash]
 	]
 	root: https://s3.amazonaws.com/metaeducation/travis-builds/
 	; commit: copy/part rebol/commit 7
