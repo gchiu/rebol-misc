@@ -31,9 +31,9 @@ latest-of: function [os [tuple!]
 	/commit [text!]
 ][
 	if not commit [
-		commit: trim/tail to text! read to url! unspaced [https://metaeducation.s3.amazonaws.com/travis-builds/ os %/last-deploy.short-hash]
+		commit: trim/tail to text! read to url! unspaced [https://dd498l1ilnrxu.cloudfront.net/travis-builds/ os %/last-deploy.short-hash]
 	]
-	root: https://s3.amazonaws.com/metaeducation/travis-builds/
+	root: https://dd498l1ilnrxu.cloudfront.net/travis-builds/
 	; commit: copy/part rebol/commit 7
 	digit: charset [#"0" - #"6"]
 	inf?: if find form rebol/version "2.102.0.16.2" [
