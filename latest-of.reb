@@ -34,9 +34,9 @@ latest-of: function [os [tuple!]
 		commit: trim/tail to text! read to url! unspaced [https://dd498l1ilnrxu.cloudfront.net/travis-builds/ os %/last-deploy.short-hash]
 	]
 	root: https://dd498l1ilnrxu.cloudfront.net/travis-builds/
-	; commit: copy/part rebol/commit 7
+	; commit: copy/part system/commit 7
 	digit: charset [#"0" - #"6"]
-	inf?: if find form rebol/version "2.102.0.16.2" [
+	inf?: if find form system/version "2.102.0.16.2" [
 		web: true
 		fsize-of: function [o [object!]][to integer! o/content-length]
 		fdate-of: function [o [object!]][
