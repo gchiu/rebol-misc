@@ -1,8 +1,8 @@
 Rebol [
 	file: %latest-of.reb
-	date: [26-Mar-2019 23-Nov-2021]
+	date: [26-Mar-2019 24-Nov-2021]
 	Author: "Graham"
-	version: 0.1.2
+	version: 0.1.3
 	note: "web and console utility"
 	usage: {
 		latest-of: do <latest-of>
@@ -71,7 +71,9 @@ latest-of: function [os [tuple!]
 		print "searching ..."
 		if error? entrap [
 			filename-info: inf? filename.url: to-url unspaced [root os "/" filename]
-			print ["File size:" round/to divide fsize-of filename-info 1000000 0.01 "Mb" "Date:" latest: fdate-of filename.info]
+			if not web [ ; info? broken on web
+				print ["File size:" round/to divide fsize-of filename-info 1000000 0.01 "Mb" "Date:" latest: fdate-of filename.info]
+			]
 			pr if web [
 				unspaced ["<a href=" filename.url ">" filename.url </a> <br/>]
 			] else [
@@ -84,10 +86,9 @@ latest-of: function [os [tuple!]
 		if error? err: entrap [
 			debugfilename-url: to-url unspaced [root os "/" debugfilename]
 			debugfilename-info: inf? debugfilename-url: to-url unspaced [root os "/" debugfilename]
-			?? debugfilename-url
-			?? debugfilename-info
-
-			print ["File size:" round/to divide fsize-of debugfilename-info 1000000 0.01 "Mb" "Date:" fdate-of debugfilename-info]
+			if not web [
+				print ["File size:" round/to divide fsize-of debugfilename-info 1000000 0.01 "Mb" "Date:" fdate-of debugfilename-info]
+			]
 			pr if web [
 				unspaced ["<a href=" debugfilename-url ">" debugfilename-url </a> <br/>]
 			] else [
