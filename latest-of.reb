@@ -54,7 +54,7 @@ latest-of: function [os [tuple!]
 		:info?
 	]
 	os: form os
-	if parse os [ 1 digit "." 1 2 digit "." 1 2 digit end][
+	if parse? os [ 1 digit "." 1 2 digit "." 1 2 digit end][
 		; looks like it might be valid OS
 		filename: unspaced ["r3-" commit]
 		debugfilename: append copy filename "-debug"
@@ -77,7 +77,7 @@ latest-of: function [os [tuple!]
 		]
 		if error? err: entrap [
 			debugfilename.info: inf? debugfilename.url: to-url unspaced [root os "/" debugfilename]
-			print ["File size:" round/to divide fsize-of debugfilename.info 1000000 .01 "Mb" "Date:" fdate-of debugfilename.info]
+			print ["File size:" round/to divide fsize-of debugfilename.info 1000000 0.01 "Mb" "Date:" fdate-of debugfilename.info]
 			pr if web [
 				unspaced ["<a href=" debugfilename.url ">" debugfilename.url </a> <br/>]
 			] else [
